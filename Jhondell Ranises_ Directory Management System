@@ -1,0 +1,104 @@
+   #include <iostream>
+#include <string>
+ 
+using namespace std;
+
+void listFiles(const string& directory, int choice) {
+    if (choice == 1) {
+        cout << "List of All Files:" << endl;
+        cout << "file1.txt" << endl;
+        cout << "file2.cpp" << endl;
+        cout << "report.cpp" << endl;
+        cout << "(continues)" << endl;
+        cout << "(Total Files: 3" << endl;
+    } else {
+        cout << "Invalid choice, please try again." << endl;
+    }
+}
+
+void createDirectory(const string& currentDir) {
+    string directoryName;
+    cout << "Enter the name of the new directory: ";
+    getline(cin, directoryName);
+
+    string newDirectory = currentDir + "\\" + directoryName;
+
+    string command = "mkdir " + newDirectory;
+    if (system(command.c_str()) == 0) {
+        cout << "Directory " << directoryName << " created successfully." << endl;
+    } else {
+        cout << "Failed to create directory " << directoryName << "." << endl;
+    }
+}
+
+string changeDirectory(const string& currentDir) {
+    int changeChoice;
+    cout << "\nCHANGE DIRECTORY MENU" << endl;
+    cout << "----------------------" << endl;
+    cout << "1. Step by step Backward" << endl;
+    cout << "2. Goto root directory" << endl;
+    cout << "3. Forward directory" << endl;
+    cout << "Enter your choice: ";
+    cin >> changeChoice;
+    cin.ignore();
+
+    string newDir = currentDir;
+    if (changeChoice == 3) {
+        string newDirName;
+        cout << "Please enter the Directory Name: ";
+        getline(cin, newDirName);
+
+        newDir = currentDir + "\\" + newDirName;
+        string command = "cd " + newDir;
+        if (system(command.c_str()) == 0) {
+            return newDir;
+        } else {
+            cout << "Directory does not exist." << endl;
+            return currentDir;
+        }
+    }
+
+    return currentDir;
+}
+
+int main() {
+    string currentDir;
+    int choice;
+
+    while (true) {
+        cout << "\nMAIN MENU" << endl;
+        cout << "----------------------" << endl;
+        cout << "1. List files in the current directory" << endl;
+        cout << "2. Create a new directory" << endl;
+        cout << "3. Change the working directory" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+
+        if (choice == 1) {
+            int subChoice;
+            cout << "\nLIST FILE MENU" << endl;
+            cout << "----------------------" << endl;
+            cout << "1. List all files" << endl;
+            cout << "2. List files by extension" << endl;
+            cout << "3. List files by pattern" << endl;
+            cout << "Enter your choice: ";
+            cin >> subChoice;
+            cin.ignore();
+
+            listFiles(currentDir, subChoice);
+        } else if (choice == 2) {
+            createDirectory(currentDir);
+        } else if (choice == 3) {
+            currentDir = changeDirectory(currentDir);
+        } else if (choice == 4) {
+            cout << "Exiting..." << endl;
+            break;
+        } else {
+            cout << "Invalid choice, please try again." << endl;
+        }
+    }
+
+    return 0;
+}
